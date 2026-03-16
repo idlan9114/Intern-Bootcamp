@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
-// Define the shape of a complaint
 export interface Complaint {
   id: string
   studentId: string
@@ -10,43 +10,33 @@ export interface Complaint {
   createdAt: number
 }
 
-export const useComplainStore = defineStore('complain', {
-  state: () => ({
-    // Initialize an empty array of complaints
-    complaints: [] as Complaint[],
-    // Search query used for filtering the list
-    searchQuery: ''
-  }),
-  getters: {
-    // Getter to return the filtered list of complaints based on the search query
-    filteredComplaints: (state) => {
-      if (!state.searchQuery) return state.complaints
-      
-      const query = state.searchQuery.toLowerCase()
-      // Filter by student name or student ID
-      return state.complaints.filter(c => 
-        c.studentName.toLowerCase().includes(query) || 
-        c.studentId.toLowerCase().includes(query)
-      )
-    }
-  },
-  actions: {
-    // Action to add a new complaint to the list
-    addComplaint(complaintData: Omit<Complaint, 'id' | 'createdAt'>) {
-      const newComplaint: Complaint = {
-        ...complaintData,
-        id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(), // Generate a unique ID
-        createdAt: Date.now() // Track when it was created
-      }
-      this.complaints.push(newComplaint)
-    },
-    // Action to delete a complaint by its ID
-    deleteComplaint(id: string) {
-      this.complaints = this.complaints.filter(c => c.id !== id)
-    },
-    // Action to update the search query
-    setSearchQuery(query: string) {
-      this.searchQuery = query
-    }
+// Composition API setup store
+export const useComplainStore = defineStore('complain', () => {
+  const complaints = ref<Complaint[]>([])
+  const searchQuery = ref('')
+
+  const filteredComplaints = computed(() => {
+    const query = searchQuery.value.toLowerCase()
+    return complaints.value.filter(c => 
+      c.studentName.toLowerCase().includes(query) || 
+      c.studentId.toLowerCase().includes(query)
+    )
+  })
+
+  function submitComplain(data: { studentId: string; name: string; email: string; description: string }) {
+    complaints.value.push({
+      id: crypto.randomUUID(),
+      studentId: data.studentId,
+      studentName: data.name,
+      studentEmail: data.email,
+      complaintText: data.description,
+      createdAt: Date.now()
+    })
   }
+
+  function deleteComplaint(id: string) {
+    complaints.value = complaints.value.filter(c => c.id !== id)
+  }
+
+  return { complaints, searchQuery, filteredComplaints, submitComplain, deleteComplaint }
 })

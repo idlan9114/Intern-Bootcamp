@@ -31,9 +31,6 @@
       <div class="max-w-5xl mx-auto flex flex-col h-[calc(100vh-140px)] min-h-[600px] bg-white rounded-3xl shadow-[0_4px_25px_rgb(0,0,0,0.04)] border border-slate-100 p-4 sm:p-7 overflow-hidden">
         <div class="pb-5 border-b border-slate-100 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Recent Complaints</h2>
-           <div class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1.5 rounded-full border border-blue-100 shadow-sm flex items-center gap-1.5">
-             <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Live Feed
-           </div>
         </div>
         
         <ComplainList class="flex-1 w-full" />

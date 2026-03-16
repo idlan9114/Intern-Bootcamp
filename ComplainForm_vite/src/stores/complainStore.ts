@@ -1,26 +1,42 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-export interface Complain {
+export interface Complaint {
   id: string
   studentId: string
-  name: string
-  email: string
-  description: string
-  submittedAt: string
+  studentName: string
+  studentEmail: string
+  complaintText: string
+  createdAt: number
 }
 
+// Composition API setup store
 export const useComplainStore = defineStore('complain', () => {
-  const complains = ref<Complain[]>([])
+  const complaints = ref<Complaint[]>([])
+  const searchQuery = ref('')
 
-  function submitComplain(data: Omit<Complain, 'id' | 'submittedAt'>) {
-    const newComplain: Complain = {
+  const filteredComplaints = computed(() => {
+    const query = searchQuery.value.toLowerCase()
+    return complaints.value.filter(c => 
+      c.studentName.toLowerCase().includes(query) || 
+      c.studentId.toLowerCase().includes(query)
+    )
+  })
+
+  function submitComplain(data: { studentId: string; name: string; email: string; description: string }) {
+    complaints.value.push({
       id: crypto.randomUUID(),
-      ...data,
-      submittedAt: new Date().toISOString()
-    }
-    complains.value.push(newComplain)
+      studentId: data.studentId,
+      studentName: data.name,
+      studentEmail: data.email,
+      complaintText: data.description,
+      createdAt: Date.now()
+    })
   }
 
-  return { complains, submitComplain }
+  function deleteComplaint(id: string) {
+    complaints.value = complaints.value.filter(c => c.id !== id)
+  }
+
+  return { complaints, searchQuery, filteredComplaints, submitComplain, deleteComplaint }
 })

@@ -43,8 +43,8 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <main class="w-screen h-screen bg-gray-100 flex items-center justify-center">
-    <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+  <main class="max-w-screen min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md mb-10">
       <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Student Complaint Form</h3>
 
       <form @submit="onSubmit" class="flex flex-col gap-4">

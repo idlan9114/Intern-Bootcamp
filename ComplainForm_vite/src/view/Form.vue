@@ -3,6 +3,7 @@ import { useForm, useField } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { useComplainStore } from '../stores/complainStore'
+import SubmitButton from '../components/SubmitButton.vue'
 
 const store = useComplainStore()
 
@@ -104,12 +105,7 @@ const onSubmit = handleSubmit((values) => {
           <p v-if="descriptionError" class="text-red-500 text-xs">{{ descriptionError }}</p>
         </div>
 
-        <button
-          type="submit"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200 cursor-pointer"
-        >
-          Submit
-        </button>
+        <SubmitButton/>
       </form>
     </div>
   </main>

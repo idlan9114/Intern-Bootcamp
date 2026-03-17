@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useForm, useField } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
 import { useComplainStore } from '../stores/complainStore'
 import SubmitButton from '../components/SubmitButton.vue'
 
 const store = useComplainStore()
 
-
-const schema = toTypedSchema(z.object({
-  studentId: z.string().min(1, 'Student ID is required.').trim(),
-  name: z.string().min(1, 'Name is required.').trim(),
-  email: z.string().min(1, 'Email is required.').email('Please enter a valid email address.').trim(),
-  description: z.string().min(1, 'Description is required.').trim(),
+const schema = toTypedSchema(yup.object({
+  studentId: yup.string().test('starts-with', 'ID must start with CD*****', val => val?.startsWith('CD')),
+  name: yup.string().required('Name is required.').trim(),
+  email: yup.string().required('Email is required.').email('Please enter a valid email address.').trim(),
+  description: yup.string().required('Description is required.').trim(),
 }))
 
 const { handleSubmit, resetForm } = useForm({
@@ -31,15 +30,22 @@ const { value: email, errorMessage: emailError } = useField<string>('email')
 const { value: description, errorMessage: descriptionError } = useField<string>('description')
 
 const onSubmit = handleSubmit((values) => {
-  store.submitComplain({
-    studentId: values.studentId,
-    name: values.name,
-    email: values.email,
-    description: values.description,
-  })
+  if (
+    typeof values.studentId === 'string' &&
+    typeof values.name === 'string' &&
+    typeof values.email === 'string' &&
+    typeof values.description === 'string'
+  ) {
+    store.submitComplain({
+      studentId: values.studentId,
+      name: values.name,
+      email: values.email,
+      description: values.description,
+    })
 
-  resetForm()
-  alert('Complaint submitted successfully!')
+    resetForm()
+    alert('Complain submitted successfully!')
+  }
 })
 </script>
 

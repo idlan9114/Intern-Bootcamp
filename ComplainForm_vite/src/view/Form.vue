@@ -9,7 +9,7 @@ const store = useComplainStore()
 
 const schema = toTypedSchema(yup.object({
   studentId: yup.string().test('starts-with', 'ID must start with CD*****', val => val?.startsWith('CD')),
-  name: yup.string().required('Name is required.').trim(),
+  name: yup.string().required('Name is required.').matches(/^[a-zA-Z\s\-']+$/, 'Name must contain letters only.').trim(),
   email: yup.string().required('Email is required.').email('Please enter a valid email address.').trim(),
   description: yup.string().required('Description is required.').trim(),
 }))

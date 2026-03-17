@@ -17,7 +17,7 @@
       </button>
     </header>
     
-    <div class="bg-gray-50 p-3 rounded text-gray-700 text-sm flex-1 whitespace-pre-wrap">
+    <div class="bg-gray-50 p-3 rounded text-gray-700 text-sm flex-1 whitespace-pre-wrap break-words overflow-hidden">
       <p>{{ complaint.complaintText }}</p>
     </div>
     

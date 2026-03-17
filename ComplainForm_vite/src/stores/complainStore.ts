@@ -10,7 +10,6 @@ export interface Complaint {
   createdAt: number
 }
 
-// Composition API setup store
 export const useComplainStore = defineStore('complain', () => {
   const complaints = ref<Complaint[]>([])
   const searchQuery = ref('')
